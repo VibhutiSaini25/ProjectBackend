@@ -1,0 +1,68 @@
+const express = require("express");
+const inventorySchema = require("../controller/model/inventorySchema");
+const mongoose=require("mongoose");
+const inventoryRoute = express.Router();
+
+inventoryRoute.post("/Enter-Inventory",(req,res)=>{
+    inventorySchema.create(req.body,(err,data)=>{
+        if(err)
+            return err;
+        else
+            res.json(data);
+    })
+})
+inventoryRoute.get("/",(req,res)=>{
+    inventorySchema.find((err,data)=>{
+        if(err)
+            return err;
+        else
+            res.json(data);
+    })
+})
+
+
+
+inventoryRoute.route("/update-inventory/:id")
+.get((req,res)=>{
+   
+    
+    inventorySchema.findById(mongoose.Types.ObjectId(req.params.id),(err,data)=>{
+        if(err)
+            return err;
+        else
+            {res.json(data);}
+    
+    })
+})
+.put((req,res)=>{
+    inventorySchema.findByIdAndUpdate(mongoose.Types.ObjectId(req.params.id),
+    {$set:req.body},
+    (err,data)=>{
+        if(err)
+            return err;
+        else
+            res.json(data);
+
+    })
+})
+inventoryRoute.delete("/delete-inventory/:id",(req,res)=>{
+    inventorySchema.findByIdAndRemove(mongoose.Types.ObjectId(req.params.id),(err,data)=>{
+        if(err)
+            return err;
+        else
+            res.json(data);
+    })
+})
+
+module.exports = inventoryRoute;
+
+
+
+
+
+
+
+
+
+
+
